@@ -1,12 +1,10 @@
 import time
-
 import numpy as np
-
 import torch
-from diff_gaussian_rasterization import GaussianRasterizationSettings, GaussianRasterizer
 
-from camera import Camera
-from gaussian_model import GaussianModel
+from diff_gaussian_rasterization import GaussianRasterizationSettings, GaussianRasterizer
+from pose_renderer.camera import Camera
+from pose_renderer.gaussian_model import GaussianModel
 
 class Renderer:
     def __init__(self, gaussian_model: GaussianModel, camera: Camera, logging: bool = True):
@@ -29,6 +27,7 @@ class Renderer:
             campos=self.camera.camera_center,
             prefiltered=False,
             debug=False,
+            antialiasing=False
         )
         if self.logging:
             print(f"Raster settings time: {time.time() - start_time}")
@@ -37,7 +36,7 @@ class Renderer:
         if self.logging:
             print(f"Rasterizer instantiation time: {time.time() - start_time}")
         start_time = time.time()
-        rendered_image, _ = rasterizer(
+        rendered_image, _, _ = rasterizer(
             means3D=self.gaussian_model.means3D,
             means2D=self.gaussian_model.means2D,
             scales=self.gaussian_model.scales,

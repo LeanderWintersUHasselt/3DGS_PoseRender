@@ -3,7 +3,7 @@ import math
 import numpy as np
 import torch
 
-from utils import get_projection_matrix, get_transformation_matrix
+from pose_renderer.utils import get_projection_matrix, get_transformation_matrix
 
 
 class Camera:
